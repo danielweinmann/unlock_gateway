@@ -1,7 +1,7 @@
 module UnlockGateway
   module Models
 
-    # This module will be included in Unlock's Gateway model. All methods will run in the context of an instance of Gateway model.
+    # Your module UnlockMyGatewayName::Models::Gateway, that should implement this interface, will be included in Unlock's Gateway model. All methods will run in the context of an instance of Gateway model.
     module Gateway
 
       # This method should return the name of the payment gateway to be displayed in Unlock's gateways configurations.
