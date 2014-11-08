@@ -10,7 +10,7 @@ Add this line to your gateway's .gemspec file:
 
 ## Usage
 
-Comming soon...
+Coming soon...
 
 ## Contributing
 
