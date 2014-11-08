@@ -1,4 +1,4 @@
-module UnlockMoip
+module UnlockGateway
   module Models
     module Gateway
 
