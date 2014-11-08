@@ -1,6 +1,6 @@
-require 'unlock_moip/setting'
-require "unlock_moip/models/gateway"
-require "unlock_moip/models/contribution"
+require 'unlock_gateway/setting'
+require "unlock_gateway/models/gateway"
+require "unlock_gateway/models/contribution"
 
 module UnlockGateway
 end
