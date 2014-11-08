@@ -6,7 +6,7 @@ Abstract gateway for [Unlock](http://github.com/danielweinmann/unlock)'s payment
 
 Add this line to your gateway's .gemspec file:
 
-    ```ruby
+    ``` ruby
     s.add_dependency "unlock_gateway"
     ```
 
@@ -16,7 +16,7 @@ Add this line to your gateway's .gemspec file:
 
 Every gateway should implement a module UnlockMyGatewayName::Models::Gateway that follows the pattern described [here](https://github.com/danielweinmann/unlock_gateway/blob/master/lib/unlock_gateway/models/gateway.rb). You should add the following to this module:
 
-    ```ruby
+    ``` ruby
     include UnlockGateway::Models::Gateway
     ```
 
@@ -24,7 +24,7 @@ Every gateway should implement a module UnlockMyGatewayName::Models::Gateway tha
 
 Every gateway should implement a module UnlockMyGatewayName::Models::Contribution that follows the pattern described [here](https://github.com/danielweinmann/unlock_gateway/blob/master/lib/unlock_gateway/models/contribution.rb). You should add the following to this module:
 
-    ```ruby
+    ``` ruby
     include UnlockGateway::Models::Contribution
     ```
 
@@ -32,7 +32,7 @@ Every gateway should implement a module UnlockMyGatewayName::Models::Contributio
 
 To let Unlock know what are the settings for this gateway, you should implement a method called _available_settings_ in your UnlockMyGatewayName::Models::Gateway that returns an array of UnlockGateway::Setting. Here is an example:
 
-    ```ruby
+    ``` ruby
     # In your lib/unlock_my_gateway_name/models/gateway.rb
     module UnlockMyGatewayName
       module Models
