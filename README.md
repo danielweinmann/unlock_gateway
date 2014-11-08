@@ -6,9 +6,9 @@ Abstract gateway for [Unlock](http://github.com/danielweinmann/unlock)'s payment
 
 Add this line to your gateway's .gemspec file:
 
-    ``` ruby
-    s.add_dependency "unlock_gateway"
-    ```
+``` ruby
+s.add_dependency "unlock_gateway"
+```
 
 ## Usage
 
