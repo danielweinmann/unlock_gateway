@@ -10,7 +10,38 @@ Add this line to your gateway's .gemspec file:
 
 ## Usage
 
-Coming soon...
+### Gateway module
+
+Every gateway should implement a module UnlockMyGatewayName::Models::Gateway that follows the pattern described [here](https://github.com/danielweinmann/unlock_gateway/blob/master/lib/unlock_gateway/models/gateway.rb). You should include the following in this module:
+
+    include UnlockGateway::Models::Gateway
+
+### Contribution module
+
+Every gateway should implement a module UnlockMyGatewayName::Models::Contribution that follows the pattern described [here](https://github.com/danielweinmann/unlock_gateway/blob/master/lib/unlock_gateway/models/contribution.rb). You should include the following in this module:
+
+    include UnlockGateway::Models::Contribution
+
+### Setting class
+
+To let Unlock know what are the settings for this gateway, you should implement a method called _available_settings_ in your UnlockMyGatewayName::Models::Gateway that returns an array of UnlockGateway::Setting. Here is an example:
+
+    # In your lib/unlock_my_gateway_name/models/gateway.rb
+    module UnlockMyGatewayName
+      module Models
+        module Gateway
+
+          include UnlockGateway::Models::Gateway
+
+          def available_settings
+            settings = []
+            settings << UnlockGateway::Setting.new(:token, "Your API token", "Instructions")
+            settings << UnlockGateway::Setting.new(:key, "Your API key", "Instructions")
+          end
+
+        end
+      end
+    end
 
 ## Contributing
 
