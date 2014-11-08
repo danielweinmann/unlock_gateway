@@ -30,7 +30,7 @@ include UnlockGateway::Models::Contribution
 
 ### Setting class
 
-To let Unlock know what are the settings for this gateway, you should implement a method called _available_settings_ in your UnlockMyGatewayName::Models::Gateway that returns an array of UnlockGateway::Setting. Here is an example:
+To let Unlock know what are the settings for this gateway, you should implement a method called _available_settings_ in your UnlockMyGatewayName::Models::Gateway that returns an array of [UnlockGateway::Setting](https://github.com/danielweinmann/unlock_gateway/blob/master/lib/unlock_gateway/setting.rb). Here is an example:
 
 ``` ruby
 # In your lib/unlock_my_gateway_name/models/gateway.rb
