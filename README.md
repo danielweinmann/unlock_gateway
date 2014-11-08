@@ -1,6 +1,6 @@
 # UnlockGateway [![Code Climate](https://codeclimate.com/github/danielweinmann/unlock_gateway.png)](https://codeclimate.com/github/danielweinmann/unlock_gateway)
 
-Abstract gateway for [Unlock](http://github.com/danielweinmann/unlock)'s payment gateway integrations
+Base gateway for [Unlock](http://github.com/danielweinmann/unlock)'s payment gateway integrations
 
 ## Installation
 
@@ -50,6 +50,18 @@ module UnlockMyGatewayName
   end
 end
 ```
+
+### Controller
+
+You should define a ContributionsController in your gateway, such as
+
+``` ruby
+class UnlockMoip::ContributionsController < ::ApplicationController
+  is_unlock_gateway
+end
+```
+
+Calling `is_unlock_gateway` inside you controller will extend UnlockGateway::Controller::ClassMethods and include UnlockGateway::Controller preparing your controller to be an unlock gateway controller. You can check out what is added to your controller [here]((https://github.com/danielweinmann/unlock_gateway/blob/master/lib/unlock_gateway/controller.rb)
 
 ## Contributing
 

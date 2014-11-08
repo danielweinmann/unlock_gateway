@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Daniel Weinmann"]
   s.email       = ["danielweinmann@gmail.com"]
   s.homepage    = "https://github.com/danielweinmann/unlock_gateway"
-  s.summary     = "Abstract gateway for Unlock's payment gateway integrations"
-  s.description = "Abstract gateway for Unlock's payment gateway integrations"
+  s.summary     = "Base gateway for Unlock's payment gateway integrations"
+  s.description = "Base gateway for Unlock's payment gateway integrations"
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
