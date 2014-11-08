@@ -24,9 +24,9 @@ include UnlockGateway::Models::Gateway
 
 Every gateway should implement a module UnlockMyGatewayName::Models::Contribution that follows the pattern described [here](https://github.com/danielweinmann/unlock_gateway/blob/master/lib/unlock_gateway/models/contribution.rb). You should add the following to this module:
 
-    ``` ruby
-    include UnlockGateway::Models::Contribution
-    ```
+``` ruby
+include UnlockGateway::Models::Contribution
+```
 
 ### Setting class
 
