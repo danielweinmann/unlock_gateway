@@ -83,7 +83,7 @@ The only view you _need_ to create is a partial called `unlock_my_gateway_name/c
 ``` ruby
 # In your unlock_my_gateway_name/contributions/_form.html.slim
 = form_for @contribution, url: my_gateway_name_contributions_path, method: :post do |form|
-  = render partial: 'sandbox_warning', locals: { gateway: gateway }
+  = render partial: 'initiatives/contributions/sandbox_warning', locals: { gateway: gateway }
   = render partial: 'initiatives/contributions/base_form', locals: { form: form, gateway: gateway }
   .submit= form.submit "Proceed to checkout"
 ```
