@@ -66,6 +66,8 @@ module UnlockGateway
     # This method authorizes the resource, checks if the contribution can be transitioned to the desired state, calls Contribution#update_state_on_gateway!, transition the contribution's state, and return the proper JSON for Unlock's AJAX calls
     def transition_state(state)
       authorize resource
+      @initiative = @contribution.initiative
+      @user = @contribution.user
       state = state.to_sym
       transition = resource.transition_by_state(state)
       if resource.send("can_#{transition}?")
@@ -73,12 +75,14 @@ module UnlockGateway
           if resource.state_on_gateway != state
             if resource.update_state_on_gateway!(state)
               resource.send("#{transition}!")
+            else
+              flash[:failure] = "Não foi possível alterar o status de seu apoio."
             end
           else
             resource.send("#{transition}!")
           end
         rescue
-          flash[:failure] = "Não foi possível alterar o status de seu apoio."
+          flash[:failure] = "Ooops, ocorreu um erro ao alterar o status de seu apoio."
         end
       else
         flash[:failure] = "Não foi permitido alterar o status deste apoio."
