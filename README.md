@@ -4,6 +4,12 @@ Base gateway for [Unlock](http://github.com/danielweinmann/unlock)'s payment gat
 
 ## Installation
 
+Create a Rails full Engine with:
+
+``` terminal
+rails plugin new my_gateway_name --full
+```
+
 Add this line to your gateway's .gemspec file:
 
 ``` ruby
