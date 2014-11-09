@@ -56,12 +56,24 @@ end
 You should define a ContributionsController in your gateway, such as
 
 ``` ruby
-class UnlockMoip::ContributionsController < ::ApplicationController
+class UnlockMyGatewayName::ContributionsController < ::ApplicationController
   is_unlock_gateway
 end
 ```
 
-Calling `is_unlock_gateway` inside you controller will extend UnlockGateway::Controller::ClassMethods and include UnlockGateway::Controller preparing your controller to be an unlock gateway controller. You can check out what is added to your controller [here]((https://github.com/danielweinmann/unlock_gateway/blob/master/lib/unlock_gateway/controller.rb)
+Calling `is_unlock_gateway` inside you controller will extend UnlockGateway::Controller::ClassMethods and include UnlockGateway::Controller, preparing your controller to be an unlock gateway controller. You can check out what is added to your controller [here]((https://github.com/danielweinmann/unlock_gateway/blob/master/lib/unlock_gateway/controller.rb)
+
+### Views
+
+The only view you _need_ to create is a partial called `unlock_my_gateway_name/contributions/_form`, that will receive a local variable `gateway`. In this partial you can render the [sandbox_warning](https://github.com/danielweinmann/unlock/blob/master/app/views/initiatives/contributions/_sandbox_warning.html.slim) and [base_form](https://github.com/danielweinmann/unlock/blob/master/app/views/initiatives/contributions/_base_form.html.slim) partials to avoid duplicating code. Here is an example:
+
+``` ruby
+# In your unlock_my_gateway_name/contributions/_form.html.slim
+= form_for @contribution, url: paypal_contributions_path, method: :post do |form|
+  = render partial: 'sandbox_warning', locals: { gateway: gateway }
+  = render partial: 'initiatives/contributions/base_form', locals: { form: form, gateway: gateway }
+  .submit= form.submit "Realizar pagamento pelo Paypal"
+```
 
 ## Contributing
 
