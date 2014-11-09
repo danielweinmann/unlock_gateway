@@ -4,6 +4,15 @@ require "unlock_gateway/models/gateway"
 require "unlock_gateway/models/contribution"
 
 module UnlockGateway
+
+  # Registers the gateway with unlock's Gateway model
+  def self.register(module_name)
+    begin
+      Gateway.register module_name
+    rescue
+    end
+  end
+
 end
 
 class ActionController::Base

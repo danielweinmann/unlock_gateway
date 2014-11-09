@@ -81,7 +81,7 @@ Calling `is_unlock_gateway` inside you controller will extend UnlockGateway::Con
 The only view you _need_ to create is a partial called `unlock_my_gateway_name/contributions/_form`, that will receive a local variable `gateway`. In this partial you can render the [sandbox_warning](https://github.com/danielweinmann/unlock/blob/master/app/views/initiatives/contributions/_sandbox_warning.html.slim) and [base_form](https://github.com/danielweinmann/unlock/blob/master/app/views/initiatives/contributions/_base_form.html.slim) partials to avoid duplicating code. Here is an example:
 
 ``` ruby
-# In your unlock_my_gateway_name/contributions/_form.html.slim
+# In your views/unlock_my_gateway_name/contributions/_form.html.slim
 = form_for @contribution, url: my_gateway_name_contributions_path, method: :post do |form|
   = render partial: 'initiatives/contributions/sandbox_warning', locals: { gateway: gateway }
   = render partial: 'initiatives/contributions/base_form', locals: { form: form, gateway: gateway }
@@ -93,6 +93,7 @@ The only view you _need_ to create is a partial called `unlock_my_gateway_name/c
 You should add a `:my_gateway_name_contributions` resource in your `config/routes.rb` that uses `UnlockMyGatewayName::ContributionsController` and has the same path as you've defined in `UnlockMyGatewayName::Models::Gateway#path`. You should also always add member actions `activate` and `suspend`. Here is an example:
 
 ``` ruby
+# In your config/routes.rb
 Rails.application.routes.draw do
 
   resources :my_gateway_name_contributions, controller: 'unlock_my_gateway_name/contributions', only: [:create, :edit, :update], path: '/my_gateway_name' do
@@ -103,6 +104,15 @@ Rails.application.routes.draw do
   end
 
 end
+```
+
+### Registering the gateway with Unlock's Gateway model
+
+You should add an initializer to register the gateway, otherwise it won't show as an option for Unlock's users. Here is an example with a `rescue`
+
+``` ruby
+# In your config/initializers/register.rb
+UnlockGateway.register 'UnlockMyGatewayName'
 ```
 
 ## Contributing
