@@ -12,8 +12,7 @@ module UnlockGateway
           inherit_resources
 
           actions :create, :edit
-          respond_to :html, except: [:activate, :suspend]
-          respond_to :json, only: [:activate, :suspend]
+          respond_to :html
 
           after_action :verify_authorized
           after_action :verify_policy_scoped, only: %i[]
@@ -32,14 +31,14 @@ module UnlockGateway
     # This action will be used when the user requests to activate/reactivate a contribution
     def activate
       respond_to do |format|
-        format.json { transition_state(:active) }
+        format.html { transition_state(:active) }
       end
     end
     
     # This action will be used when the user requests to suspend a contribution
     def suspend
       respond_to do |format|
-        format.json { transition_state(:suspended) }
+        format.html { transition_state(:suspended) }
       end
     end
 
@@ -52,8 +51,8 @@ module UnlockGateway
       @gateways = @initiative.gateways.without_state(:draft).order(:ordering)
       @contribution = @initiative.contributions.new(contribution_params)
       @contribution.gateway_state = @contribution.gateway.state
+      current_user.update module_name: @contribution.gateway.module_name
       authorize @contribution
-      session[:gateway_id] = @contribution.gateway.id
 
       if @contribution.save
         true
@@ -67,7 +66,6 @@ module UnlockGateway
     # This method authorizes the resource, checks if the contribution can be transitioned to the desired state, calls Contribution#update_state_on_gateway!, transition the contribution's state, and return the proper JSON for Unlock's AJAX calls
     def transition_state(state)
       authorize resource
-      errors = []
       state = state.to_sym
       transition = resource.transition_by_state(state)
       if resource.send("can_#{transition}?")
@@ -80,12 +78,17 @@ module UnlockGateway
             resource.send("#{transition}!")
           end
         rescue
-          errors << "Não foi possível alterar o status de seu apoio."
+          flash[:failure] = "Não foi possível alterar o status de seu apoio."
         end
       else
-        errors << "Não foi permitido alterar o status deste apoio."
+        flash[:failure] = "Não foi permitido alterar o status deste apoio."
       end
-      render(json: {success: (errors.size == 0), errors: errors}, status: ((errors.size == 0) ? 200 : 422))
+      if flash[:failure].present?
+        render 'initiatives/contributions/show'
+      else
+        flash[:success] = "Status do apoio alterado com sucesso!"
+        redirect_to initiative_contribution_path(@contribution.initiative.id, @contribution)
+      end
     end
 
     # Strong parameters for Contribution. This duplication is due to a inherited_resources problem that requires both

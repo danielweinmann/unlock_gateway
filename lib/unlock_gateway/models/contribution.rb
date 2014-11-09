@@ -4,6 +4,10 @@ module UnlockGateway
     # Your module UnlockMyGatewayName::Models::Contribution, that should implement this interface, will be included in Unlock's Contribution model. All methods will run in the context of an instance of Contribution model.
     module Contribution
 
+      # This method should return the unique identifier of the contribution on the gateway
+      def gateway_identifier
+      end
+
       # This method should return the actual state of a contribution on the gateway, with name according to Contribution's state machine, as a Symbol.
       def state_on_gateway
       end
