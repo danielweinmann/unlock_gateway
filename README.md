@@ -7,7 +7,7 @@ Base gateway for [Unlock](http://github.com/danielweinmann/unlock)'s payment gat
 Create a Rails full Engine with:
 
 ``` terminal
-rails plugin new my_gateway_name --full
+rails plugin new unlock_my_gateway_name --full
 ```
 
 Add this line to your gateway's .gemspec file:
@@ -75,10 +75,27 @@ The only view you _need_ to create is a partial called `unlock_my_gateway_name/c
 
 ``` ruby
 # In your unlock_my_gateway_name/contributions/_form.html.slim
-= form_for @contribution, url: paypal_contributions_path, method: :post do |form|
+= form_for @contribution, url: my_gateway_name_contributions_path, method: :post do |form|
   = render partial: 'sandbox_warning', locals: { gateway: gateway }
   = render partial: 'initiatives/contributions/base_form', locals: { form: form, gateway: gateway }
-  .submit= form.submit "Realizar pagamento pelo Paypal"
+  .submit= form.submit "Proceed to checkout"
+```
+
+### Routes
+
+You should add a `:my_gateway_name_contributions` resource in your `config/routes.rb` that uses `UnlockMyGatewayName::ContributionsController` and has the same path as you've defined in `UnlockMyGatewayName::Models::Gateway#path`. You should also always add member actions `activate` and `suspend`. Here is an example:
+
+``` ruby
+Rails.application.routes.draw do
+
+  resources :my_gateway_name_contributions, controller: 'unlock_my_gateway_name/contributions', only: [:create, :edit, :update], path: '/my_gateway_name' do
+    member do
+      put :activate
+      put :suspend
+    end
+  end
+
+end
 ```
 
 ## Contributing
