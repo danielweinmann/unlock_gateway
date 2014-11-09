@@ -67,7 +67,7 @@ class UnlockMyGatewayName::ContributionsController < ::ApplicationController
 end
 ```
 
-Calling `is_unlock_gateway` inside you controller will extend UnlockGateway::Controller::ClassMethods and include UnlockGateway::Controller, preparing your controller to be an unlock gateway controller. You can check out what is added to your controller [here]((https://github.com/danielweinmann/unlock_gateway/blob/master/lib/unlock_gateway/controller.rb)
+Calling `is_unlock_gateway` inside you controller will extend UnlockGateway::Controller::ClassMethods and include UnlockGateway::Controller, preparing your controller to be an unlock gateway controller. You can check out what is added to your controller [here](https://github.com/danielweinmann/unlock_gateway/blob/master/lib/unlock_gateway/controller.rb)
 
 ### Views
 
