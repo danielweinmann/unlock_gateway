@@ -16,6 +16,13 @@ Add this line to your gateway's .gemspec file:
 s.add_dependency "unlock_gateway"
 ```
 
+Require `unlock_gateway` before anything else:
+
+``` ruby
+# On lib/unlock_my_gateway_name.rb
+require "unlock_gateway"
+```
+
 ## Usage
 
 ### Gateway module
