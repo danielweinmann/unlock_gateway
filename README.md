@@ -108,7 +108,7 @@ end
 
 ### Registering the gateway with Unlock's Gateway model
 
-You should add an initializer to register the gateway, otherwise it won't show as an option for Unlock's users. Here is an example with a `rescue`
+You should add an initializer to register the gateway, otherwise it won't show as an option for Unlock's users.
 
 ``` ruby
 # In your config/initializers/register.rb
