@@ -9,9 +9,8 @@ module UnlockGateway
       def self.extended(base)
         base.class_eval do
 
-          inherit_resources
+          before_action :set_contribution, only: %i[edit activate suspend]
 
-          actions :create, :edit
           respond_to :html
 
           after_action :verify_authorized
@@ -25,24 +24,25 @@ module UnlockGateway
 
     # A second step or final checkout should use this action
     def edit
-      edit! { authorize resource }
+      authorize @contribution
     end
 
     # This action will be used when the user requests to activate/reactivate a contribution
     def activate
-      respond_to do |format|
-        format.html { transition_state(:active) }
-      end
+      transition_state(:active)
     end
     
     # This action will be used when the user requests to suspend a contribution
     def suspend
-      respond_to do |format|
-        format.html { transition_state(:suspended) }
-      end
+      transition_state(:suspended)
     end
 
     private
+
+    # Sets @contribution
+    def set_contribution
+      @contribution = Contribution.find(params[:id])
+    end
 
     # Creates the contribution, sets session[:gateway_id], returns true if successful and renders new action if not
     def create_contribution
@@ -63,46 +63,42 @@ module UnlockGateway
 
     end
 
-    # This method authorizes the resource, checks if the contribution can be transitioned to the desired state, calls Contribution#update_state_on_gateway!, transition the contribution's state, and return the proper JSON for Unlock's AJAX calls
+    # This method authorizes @contribution, checks if the contribution can be transitioned to the desired state, calls Contribution#update_state_on_gateway!, transition the contribution's state, and return the proper JSON for Unlock's AJAX calls
     def transition_state(state)
-      authorize resource
-      @initiative = resource.initiative
-      @user = resource.user
+      authorize @contribution
+      @initiative = @contribution.initiative
+      @user = @contribution.user
       state = state.to_sym
-      transition = resource.transition_by_state(state)
-      initial_state = resource.state_name
-      if resource.send("can_#{transition}?")
+      transition = @contribution.transition_by_state(state)
+      initial_state = @contribution.state_name
+      resource_name = @contribution.class.model_name.human
+      if @contribution.send("can_#{transition}?")
         begin
-          if resource.state_on_gateway != state
-            if resource.update_state_on_gateway!(state)
-              resource.send("#{transition}!")
+          if @contribution.state_on_gateway != state
+            if @contribution.update_state_on_gateway!(state)
+              @contribution.send("#{transition}!")
             else
-              flash[:failure] = "Não foi possível alterar o status de seu apoio."
+              flash[:alert] = t('flash.actions.update.alert', resource_name: resource_name)
             end
           else
-            resource.send("#{transition}!")
+            @contribution.send("#{transition}!")
           end
         rescue
-          flash[:failure] = "Ooops, ocorreu um erro ao alterar o status de seu apoio."
+          flash[:alert] = t('flash.actions.update.alert', resource_name: resource_name)
         end
       else
-        flash[:failure] = "Não foi permitido alterar o status deste apoio."
+        flash[:alert] = t('flash.actions.update.alert', resource_name: resource_name)
       end
-      if flash[:failure].present?
+      if flash[:alert].present?
         render 'initiatives/contributions/show'
       else
         if initial_state == :pending
-          flash[:success] = "Apoio realizado com sucesso!"
+          flash[:notice] = t('flash.actions.create.notice', resource_name: resource_name)
         else
-          flash[:success] = "Status do apoio alterado com sucesso!"
+          flash[:notice] = t('flash.actions.update.notice', resource_name: resource_name)
         end
-        redirect_to initiative_contribution_path(resource.initiative.id, resource)
+        redirect_to initiative_contribution_path(@contribution.initiative.id, @contribution)
       end
-    end
-
-    # Strong parameters for Contribution. This duplication is due to a inherited_resources problem that requires both
-    def permitted_params
-      params.permit(contribution: policy(@contribution || Contribution.new).permitted_attributes)
     end
 
     # Strong parameters for Contribution    
