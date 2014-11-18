@@ -48,7 +48,7 @@ module UnlockGateway
     def create_contribution
 
       @initiative = Initiative.find(contribution_params[:initiative_id])
-      @gateways = @initiative.gateways.without_state(:draft).order(:ordering)
+      @gateways = @initiative.gateways.without_state(:draft).ordered
       @contribution = @initiative.contributions.new(contribution_params)
       @contribution.gateway_state = @contribution.gateway.state
       current_user.update module_name: @contribution.gateway.module_name
