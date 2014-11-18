@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    unlock_gateway (0.2.0)
+    unlock_gateway (0.2.1)
       rails (~> 4.1.6)
 
 GEM
